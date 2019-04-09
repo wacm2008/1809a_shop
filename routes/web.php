@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+//微信
+Route::get('/weixin/valid','weixin\WxController@valid');
