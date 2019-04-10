@@ -24,5 +24,3 @@ Route::post('/weixin/valid','weixin\WxController@valide');
 Route::get('/weixin/accesstoken','weixin\WxController@getAccessToken');
 Route::get('/weixin/test','weixin\WxController@test');
 
-//数据库测试
-Route::get('/sql','weixin\WxController@sql');
