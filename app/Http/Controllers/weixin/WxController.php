@@ -28,7 +28,6 @@ class WxController extends Controller
 //         echo 'EventKey: '. $data->EventKey;echo '</br>';
         $wx_id = $data->ToUserName;// 公众号ID
         $openid = $data->FromUserName;//用户OpenID
-        var_dump($openid);exit;
         $event = $data->Event;//事件类型
 
         //扫码关注事件
