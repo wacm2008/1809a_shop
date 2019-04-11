@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redis;
 use App\Model\User\WxuserModel;
 use DB;
+use GuzzleHttp\Client;
 class WxController extends Controller
 {
     public function valid(){
@@ -79,9 +80,52 @@ class WxController extends Controller
         }
         return $token;
     }
+    //微信菜单测试
     public function getaToken(){
         echo $this->getAccessToken();
     }
+    //微信菜单创建
+    public function createMenu(){
+        $url='https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->getAccessToken();
+        //接口数据
+        //注意菜单层级关系
+        $post_arr = [
+            'button'    => [
+                [
+                    'type'  => 'click',
+                    'name'  => '巴特罗之家',
+                    'key'   => 'key_menu_001'
+                ],
+                [
+                    'type'  => 'click',
+                    'name'  => '圣家族大教堂',
+                    'key'   => 'key_menu_002'
+                ],
+            ]
+        ];
+        //处理中文编码
+        $json_str = json_encode($post_arr,JSON_UNESCAPED_UNICODE);
+        // 发送请求
+        $clinet = new Client();
+        //发送 json字符串
+        $response = $clinet->request('POST',$url,[
+            'body'  => $json_str
+        ]);
+        //处理响应
+        $res_str = $response->getBody();
+        //echo $res_str;
+        $arr = json_decode($res_str,true);
+        print_r($arr);
+        //判断错误信息
+        if($arr['errcode']>0){
+            //TODO 错误处理
+            echo "创建菜单失败";
+        }else{
+            // TODO 正常逻辑
+            echo "创建菜单成功";
+        }
+    }
+    //获取微信accesstoken测试
     public function test(){
         $access_token=$this->getAccessToken();
         echo $access_token;
