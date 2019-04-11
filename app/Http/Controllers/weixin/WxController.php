@@ -17,7 +17,7 @@ class WxController extends Controller
         $content=file_get_contents("php://input");
         $time=date('Y-m-d H:i:s',time());
         $str=$time.$content."\n";
-        file_put_contents("logs/wxlog",$str,FILE_APPEND);
+        file_put_contents("logs/wxlog.log",$str,FILE_APPEND);
         $data=simplexml_load_string($content);
         //var_dump($data);
 //         echo 'ToUserName: '. $data->ToUserName;echo '</br>';        // 公众号ID
@@ -26,17 +26,20 @@ class WxController extends Controller
 //         echo 'MsgType: '. $data->MsgType;echo '</br>';              // 消息类型
 //         echo 'Event: '. $data->Event;echo '</br>';                  // 事件类型
 //         echo 'EventKey: '. $data->EventKey;echo '</br>';
-        $wx_id = $data->ToUserName;             // 公众号ID
-        $openid = $data->FromUserName;          //用户OpenID
-        $event = $data->Event;                  //事件类型
+        $wx_id = $data->ToUserName;// 公众号ID
+        $openid = $data->FromUserName;//用户OpenID
+        var_dump($openid);exit;
+        $event = $data->Event;//事件类型
 
         //扫码关注事件
         if($event=='subscribe'){
             //根据openid判断用户是否已存在
             $local_user = WxuserModel::where(['openid'=>$openid])->first();
-            if($local_user){        //用户之前关注过
+            if($local_user){
+                //用户之前关注过
                 echo '<xml><ToUserName><![CDATA['.$openid.']]></ToUserName><FromUserName><![CDATA['.$wx_id.']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['. '欢迎回来 '. $local_user['nickname'] .']]></Content></xml>';
-            }else{          //用户首次关注
+            }else{
+                //用户首次关注
                 //获取用户信息
                 $arr = $this->getUserInfo($openid);
                 //用户信息入库
