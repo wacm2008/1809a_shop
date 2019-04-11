@@ -18,9 +18,12 @@ Route::get('/info', function () {
     phpinfo();
 });
 
-//微信
+//微信首次连接
 Route::get('/weixin/valid','weixin\WxController@valid');
+//接收微信服务推送
 Route::post('/weixin/valid','weixin\WxController@valide');
 Route::get('/weixin/accesstoken','weixin\WxController@getAccessToken');
+//微信菜单
+Route::get('/weixin/atoken','weixin\WxController@getaToken');
 Route::get('/weixin/test','weixin\WxController@test');
 

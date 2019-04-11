@@ -79,6 +79,9 @@ class WxController extends Controller
         }
         return $token;
     }
+    public function getaToken(){
+        echo $this->getAccessToken();
+    }
     public function test(){
         $access_token=$this->getAccessToken();
         echo $access_token;
